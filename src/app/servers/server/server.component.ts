@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 
 import { ServersService } from '../servers.service';
-import { ActivatedRoute, Params, Router } from '@angular/router';
+import { ActivatedRoute, Data, Params, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -20,13 +20,18 @@ export class ServerComponent implements OnInit, OnDestroy {
     private router: Router) { }
 
   ngOnInit() {
-    this.serverId = Number(this.route.snapshot.params['id'])
-    this.paramSubscription = this.route.params.subscribe(
-      (params: Params) => {
-        this.serverId = params['id']
-        this.server = this.serversService.getServer(Number(this.serverId));
-      }
-      )
+    // Replaced by the Resolver Service for async data
+    // this.serverId = Number(this.route.snapshot.params['id'])
+    // this.paramSubscription = this.route.params.subscribe(
+    //   (params: Params) => {
+    //     this.serverId = params['id']
+    //     this.server = this.serversService.getServer(Number(this.serverId));
+    //   }
+    //   )
+
+    this.route.data.subscribe(
+      (data: Data) => this.server = data['server']
+    )
     }
 
     onEdit() {
