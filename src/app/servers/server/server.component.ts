@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 
 import { ServersService } from '../servers.service';
-import { ActivatedRoute, Params } from '@angular/router';
+import { ActivatedRoute, Params, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -14,7 +14,10 @@ export class ServerComponent implements OnInit, OnDestroy {
   serverId: number;
   paramSubscription: Subscription
 
-  constructor(private serversService: ServersService, private route: ActivatedRoute) { }
+  constructor(
+    private serversService: ServersService,
+    private route: ActivatedRoute,
+    private router: Router) { }
 
   ngOnInit() {
     this.serverId = Number(this.route.snapshot.params['id'])
@@ -24,6 +27,11 @@ export class ServerComponent implements OnInit, OnDestroy {
         this.server = this.serversService.getServer(Number(this.serverId));
       }
       )
+    }
+
+    onEdit() {
+      // Navigate
+      this.router.navigate(['edit'], {relativeTo: this.route, queryParamsHandling: 'preserve'})
     }
 
     ngOnDestroy(): void {
